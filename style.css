@@ -80,6 +80,10 @@ body {
 	margin-inline: auto;
 }
 
+#display a {
+	color: inherit;
+}
+
 .gradient {
 	display: flex;
 	block-size: 5em;
