@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" class="checkered">
+<head>
+	<meta charset="utf-8" />
+	<title>Contrast Ratio</title>
+	<link rel="stylesheet" href="style.css" />
+	<link rel="shortcut icon"  type="image/png" href="about:blank" />
+</head>
+<body>
+	<output class="gradient" id="output" for="bgInput fgInput" aria-live="polite">
+		<strong></strong>
+		<span></span>
+	</output>
+
+	<div id="form">
+		<label>
+			<span>Background</span>
+			<input id="bgInput" value="hsla(200,0%,0%,0.8)" autofocus>
+		</label>
+		<label>
+			<span>Text color</span>
+			<input id="fgInput" value="orangered">
+		</label>
+		<button id="swap">Swap colors</button>
+	</div>
+
+	<div id="display">
+		<p>This sample text attempts to visually demonstrate how readable this color combination is, for normal, <i>italic</i>, <b>bold</b>, or <small>small</small> text.</p>
+	</div>
+
+	<script src="contrast.js" type="module"></script>
+</body>
+</html>
