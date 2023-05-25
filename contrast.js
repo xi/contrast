@@ -4,7 +4,8 @@ import * as favicon from './favicon.js';
 var fgInput = document.querySelector('#fgInput');
 var bgInput = document.querySelector('#bgInput');
 var swapButton = document.querySelector('#swap');
-var output = document.querySelector('#output');
+var gradient = document.querySelector('#output .gradient');
+var description = document.querySelector('#output .description');
 
 var score = function(range, levels) {
   var biggerThan = function(t) {
@@ -82,6 +83,18 @@ var formatRange = function(range, places) {
   }
 };
 
+var makeDescription = function(value, levels) {
+  if (value < levels[0]) {
+    return 'not enough';
+  } else if (value < levels[1]) {
+    return 'ok for large text';
+  } else if (value < levels[2]) {
+    return 'ok';
+  } else {
+    return 'great!';
+  }
+}
+
 var oninput = function() {
   // NOTE: | to prevent lazy evaluation
   if (setColor(bgInput, 'backgroundColor') | setColor(fgInput, 'color')) {
@@ -96,8 +109,17 @@ var oninput = function() {
     var fg = parseColor(computed.color);
 
     var wcag2Range = wcag2.contrastAlpha(fg, bg, wcag2.contrast);
-    output.style.backgroundImage = makeGradient(score(wcag2Range.map(Math.log), wcag2.levels.map(Math.log)));
-    output.textContent = formatRange(wcag2.getAbsRange(wcag2Range), 2);
+    var absRange = wcag2.getAbsRange(wcag2Range);
+    gradient.style.backgroundImage = makeGradient(score(wcag2Range.map(Math.log), wcag2.levels.map(Math.log)));
+    gradient.textContent = formatRange(absRange, 2);
+
+    let desc1 = makeDescription(absRange[0], wcag2.levels);
+    let desc2 = makeDescription(absRange[1], wcag2.levels);
+    if (desc1 === desc2) {
+      description.textContent = desc1;
+    } else {
+      description.textContent = `ranges from "${desc1}" to "${desc2}"`;
+    }
   }
 };
 
