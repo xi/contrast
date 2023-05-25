@@ -7,7 +7,17 @@ var swapButton = document.querySelector('#swap');
 var gradient = document.querySelector('#output .gradient');
 var description = document.querySelector('#output .description');
 
-var score = function(range, levels) {
+var score = function(linRange, linLevels) {
+  // Estimate home many color combinations fall into each category,
+  // assuming that log(contrasts) is evenly distributed.
+  //
+  // We have to work with signed contrasts, otherwise for very transparent
+  // backgrounds we would move directly from high negative contrast to high
+  // positive contrast and miss all the low contrast in between.
+
+  var range = linRange.map(Math.log);
+  var levels = linLevels.map(Math.log);
+
   var biggerThan = function(t) {
     if (range[0] > t) {
       return 1;
@@ -108,9 +118,9 @@ var oninput = function() {
     var bg = parseColor(computed.backgroundColor);
     var fg = parseColor(computed.color);
 
-    var wcag2Range = wcag2.contrastAlpha(fg, bg, wcag2.contrast);
-    var absRange = wcag2.getAbsRange(wcag2Range);
-    gradient.style.backgroundImage = makeGradient(score(wcag2Range.map(Math.log), wcag2.levels.map(Math.log)));
+    var range = wcag2.getContrastRange(fg, bg);
+    var absRange = wcag2.getAbsRange(range);
+    gradient.style.backgroundImage = makeGradient(score(range, wcag2.levels));
     gradient.textContent = formatRange(absRange, 2);
 
     let desc1 = makeDescription(absRange[0], wcag2.levels);

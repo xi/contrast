@@ -40,7 +40,7 @@ var alphaBlend = function(fg, bg) {
   ];
 };
 
-export var contrastAlpha = function(afg, abg, contrast) {
+export var getContrastRange = function(afg, abg) {
   var bgBlack = alphaBlend(abg, [0, 0, 0]);
   var fgBlack = alphaBlend(afg, bgBlack);
   var cBlack = contrast(fgBlack, bgBlack);
