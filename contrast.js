@@ -103,7 +103,7 @@ var makeDescription = function(value, levels) {
   } else {
     return 'great!';
   }
-}
+};
 
 var oninput = function() {
   // NOTE: | to prevent lazy evaluation
