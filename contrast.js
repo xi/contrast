@@ -6,6 +6,7 @@ var bgInput = document.querySelector('#bgInput');
 var swapButton = document.querySelector('#swap');
 var gradient = document.querySelector('#output .gradient');
 var description = document.querySelector('#output .description');
+var canvas = document.querySelector('canvas');
 
 var score = function(linRange, linLevels) {
   // Estimate home many color combinations fall into each category,
@@ -64,16 +65,11 @@ var makeGradient = function(scores) {
 };
 
 var parseColor = function(s) {
-  var rgba = s.match(/rgba?\(([\d.]+), ([\d.]+), ([\d.]+)(?:, ([\d.]+))?\)/);
-  if (!rgba) {
-    return null;
-  }
-  rgba.shift();
-  if (rgba[3] === undefined) {
-    rgba[3] = 1;
-  }
-  rgba = rgba.map(x => parseFloat(x, 10));
-  return rgba;
+  var context = canvas.getContext('2d');
+  context.fillStyle = s;
+  context.fillRect(0,0,1,1);
+  var data = context.getImageData(0, 0, 1, 1, {colorSpace: 'srgb'}).data;
+  return [data[0], data[1], data[2], data[3] / 255];
 };
 
 var setColor = function(input, key) {
@@ -114,9 +110,8 @@ var oninput = function() {
 
     favicon.setFavicon(bgInput.value, fgInput.value);
 
-    var computed = getComputedStyle(document.body);
-    var bg = parseColor(computed.backgroundColor);
-    var fg = parseColor(computed.color);
+    var bg = parseColor(bgInput.value);
+    var fg = parseColor(fgInput.value);
 
     var range = wcag2.getContrastRange(fg, bg);
     var absRange = wcag2.getAbsRange(range);
