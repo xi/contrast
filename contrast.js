@@ -67,6 +67,7 @@ var makeGradient = function(scores) {
 
 var parseColor = function(s) {
   context.fillStyle = s;
+  context.clearRect(0,0,1,1);
   context.fillRect(0,0,1,1);
   var data = context.getImageData(0, 0, 1, 1, {colorSpace: 'srgb'}).data;
   return [data[0], data[1], data[2], data[3] / 255];
