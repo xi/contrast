@@ -7,6 +7,7 @@ var swapButton = document.querySelector('#swap');
 var gradient = document.querySelector('#output .gradient');
 var description = document.querySelector('#output .description');
 var canvas = document.querySelector('canvas');
+var context = canvas.getContext('2d');
 
 var score = function(linRange, linLevels) {
   // Estimate home many color combinations fall into each category,
@@ -65,7 +66,6 @@ var makeGradient = function(scores) {
 };
 
 var parseColor = function(s) {
-  var context = canvas.getContext('2d');
   context.fillStyle = s;
   context.fillRect(0,0,1,1);
   var data = context.getImageData(0, 0, 1, 1, {colorSpace: 'srgb'}).data;
